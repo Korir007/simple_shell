@@ -10,9 +10,14 @@
 #include <stdbool.h>
 #include <string.h>
 
-/* Global variables */i
+/* Global variables */
 
 #define COMMAND_LENGTH 75
+
+/* Function prototypes */
+
+void print_prompt(void);
+ssize_t get_input(void);
 
 #endif /* SHELL_H */
 
