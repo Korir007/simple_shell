@@ -22,8 +22,10 @@ int main(void)
 
 		command[strcspn(command, "\n")] = '\0';
 
-	}
+		process_id = fork();
 
+	}
+	
 	return (0);
 }
 

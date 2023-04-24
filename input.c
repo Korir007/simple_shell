@@ -16,10 +16,10 @@ ssize_t get_input(void)
 
 	command = NULL;
 	length = 0;
-	input = getline(&command, length, stdin);
+	input = getline(&command, &length, stdin);
 
 	if (input == -1)
-		break;
+		exit(EXIT_FAILURE);
 
 	return (input);
 }
