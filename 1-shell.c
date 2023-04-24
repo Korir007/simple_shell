@@ -1,13 +1,13 @@
 #include "shell.h"
 
 /**
+* main - entry point
 *
+* Description: simple shell interpreter
 *
+* @void: zero arguments
 *
-*
-*
-*
-*
+* Return: 0 if successful
 */
 
 int main(void)
@@ -17,19 +17,13 @@ int main(void)
 
 	while (true)
 	{
-		printf("#cisfun$ \n");
+		print_prompt();
+		get_input();
 
-		process_id = fork();
+		command[strcspn(command, "\n")] = '\0';
 
-		if (process_id < 0)
-		{
-			perror("Error.\n");
-			exit(98);
-		}
-		else if (process_id == 0)
-		{
-			printf("Successful.\n");
-		}
 	}
+
 	return (0);
 }
+
