@@ -17,8 +17,8 @@ int main(void)
 
 	while (true)
 	{
-		print_prompt();
-		get_input();
+		print_prompt(STDERR_FILENO);
+		get_input(command);
 
 		command[strcspn(command, "\n")] = '\0';
 

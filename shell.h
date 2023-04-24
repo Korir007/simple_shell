@@ -16,8 +16,8 @@
 
 /* Function prototypes */
 
-void print_prompt(void);
-ssize_t get_input(void);
+void print_prompt(int fd);
+ssize_t get_input(char *command);
 
 #endif /* SHELL_H */
 

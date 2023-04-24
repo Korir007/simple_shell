@@ -3,14 +3,13 @@
 /**
 * get_input - reads user input
 *
-* @void: no arguments
+* @command: command input by user
 *
 * Return: input
 */
 
-ssize_t get_input(void)
+ssize_t get_input(char *command)
 {
-	char *command;
 	size_t length;
 	ssize_t input;
 
