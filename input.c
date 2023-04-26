@@ -3,13 +3,14 @@
 /**
 * get_input - reads user input
 *
-* @command: command input by user
+* @void: no arguments
 *
-* Return: input
+* Return: command input by user
 */
 
-ssize_t get_input(char *command)
+char *get_input(void)
 {
+	char *command;
 	size_t length;
 	ssize_t input;
 
@@ -18,8 +19,27 @@ ssize_t get_input(char *command)
 	input = getline(&command, &length, stdin);
 
 	if (input == -1)
-		exit(EXIT_FAILURE);
+	{
+		if (input == EOF)
+		{
+			write(STDOUT_FILENO, "\n", 1);
+			exit(EXIT_SUCCESS);
+		}
+		else
+		{
+			/* easier to trace where error occured */
+			perror("input error");
+			exit(EXIT_FAILURE);
+		}
+	}
 
-	return (input);
+	/* checks if user presses ENTER after input */
+
+	if (command[input - 1] == '\n')
+	{
+		command[input - 1] = '\0';
+	}
+
+	return (command);
 }
 
