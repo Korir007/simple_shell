@@ -23,6 +23,7 @@ int my_strlen(char *string);
 int my_strcmp(const char *first_string, const char *second_string);
 void tokenizer(char *command);
 void execute_command(char *command);
+int exit_sh(datashell *data);
 
 #endif /* SHELL_H */
 
