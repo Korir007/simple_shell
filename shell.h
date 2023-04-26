@@ -13,11 +13,13 @@
 /* Global variables */
 
 #define COMMAND_LENGTH 75
+#define BUFFER 1024
 
 /* Function prototypes */
 
-void print_prompt(int fd);
-ssize_t get_input(char *command);
+void print_prompt(void);
+char *get_input(void);
+int my_strlen(char *string);
 
 #endif /* SHELL_H */
 
