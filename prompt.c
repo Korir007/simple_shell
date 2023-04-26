@@ -10,13 +10,11 @@
 
 void print_prompt(void)
 {
-	char *prompt;
-
-	prompt = "#cisfun$ ";
+	char prompt[2] = "$ ";
 
 	if (prompt != NULL)
 	{
-		write(STDOUT_FILENO, prompt, 10);
+		write(STDOUT_FILENO, prompt, sizeof(prompt));
 	}
 }
 

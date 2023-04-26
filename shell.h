@@ -20,6 +20,7 @@
 void print_prompt(void);
 char *get_input(void);
 int my_strlen(char *string);
+int my_strcmp(const char *first_string, const char *second_string);
 
 #endif /* SHELL_H */
 
