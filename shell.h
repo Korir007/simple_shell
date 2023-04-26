@@ -20,6 +20,7 @@
 void print_prompt(void);
 char *get_input(void);
 int my_strlen(char *string);
+int exit_sh(datashell *data);
 
 #endif /* SHELL_H */
 
