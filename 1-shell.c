@@ -18,6 +18,8 @@ int main(void)
 	{
 		print_prompt();
 		command = get_input();
+		execute_command(command);
+		free(command);
 	}
 
 	return (0);
