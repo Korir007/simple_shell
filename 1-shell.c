@@ -13,7 +13,7 @@
 int main(void)
 {
 	char *command = NULL, *arg[] = {NULL}, error_returned[BUFFER];
-	pid_t child_pid = fork();
+	pid_t child_pid;
 	int status;
 
 	while (true)
@@ -22,6 +22,7 @@ int main(void)
 		command = get_input();
 		if (access(command, X_OK) != -1)
 		{
+			child_pid = fork();
 			if (child_pid == -1)
 			{
 				perror("fork() failed!");
