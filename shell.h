@@ -20,7 +20,11 @@
 void print_prompt(void);
 char *get_input(void);
 int my_strlen(char *string);
+<<<<<<< HEAD
 int my_strcmp(const char *first_string, const char *second_string);
+=======
+int exit_sh(datashell *data);
+>>>>>>> Daniel
 
 #endif /* SHELL_H */
 
