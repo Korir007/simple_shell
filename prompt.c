@@ -3,17 +3,20 @@
 /**
 * print_prompt - prints $
 *
-* @fd: file descriptor that will written into
+* @void: no arguments
 *
 * Return: void
 */
 
-void print_prompt(int fd)
+void print_prompt(void)
 {
 	char *prompt;
 
 	prompt = "$ ";
 
-	write(fd, prompt, COMMAND_LENGTH);
+	if (prompt != NULL)
+	{
+		write(STDOUT_FILENO, prompt, 2);
+	}
 }
 
