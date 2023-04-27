@@ -21,14 +21,14 @@ void print_prompt(void)
 /**
  * _iswhich - locates a command
  *
- * @cmd: command name
+ * @prompt: command name
  *
  * @_environ: environment variable
  *
  * Return: Exec of command
  */
 
-char *_iswhich(char *command, char **_environ)
+char *_iswhich(char *cmd, char **_environ)
 {
 	char *path, *ptr_path, *token_path, *dir;
 	int len_dir, len_cmd, i;
@@ -108,5 +108,54 @@ int _isexecutable(data_shell *datash)
 	}
 }
 
+/*
+ *cmd_exec - runs command lines
+ *
+ *@datash: data relevant
+ *
+ *Return: 1 on Success
+ */
 
+int cmd_exec(data_shell *datash)
+{
+	pid_t pd;
+	pid_t wpd;
+	int state;
+	int exec;
+	char *dir;
+	(void) wpd;
+
+	exec = is_executable(datash);
+	if (exec == -1)
+		return (1);
+	if (exec == 0)
+	{
+		dir = _which(datash->args[0], datash->_environ);
+	
+	}
+
+	pd = fork();
+	if (pd == 0)
+	{
+		if (exec == 0)
+			dir = _which(datash->args[0], datash->_environ);
+		else
+			dir = datash->args[0];
+		execve(dir + exec, datash->args, datash->_environ);
+	}
+	else if (pd < 0)
+	{
+		perror(datash->av[0]);
+		return (1);
+	}
+	else
+	{
+		do {
+			wpd = waitpid(pd, &state, WUNTRACED);
+		} while (!WIFEXITED(state) && !WIFSIGNALED(state));
+	}
+
+	datash->status = state / 256;
+	return (1);
+}
 
