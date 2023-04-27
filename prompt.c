@@ -72,4 +72,41 @@ char *_iswhich(char *command, char **_environ)
 }
 
 
+/**
+ * _isexecutable - determines if is an executable
+ *
+ * @datash: data structure
+ *
+ * Return: 0 if is not an executable, other number if it does
+ */
+int _isexecutable(data_shell *datash)
+{
+	int i;
+	char *get_input;
+
+	get_input = datash->args[0];
+	for (i = 0; get_input[i]; i++)
+	{
+		if (get_input[i] == '.')
+		{
+			if (get_input[i + 1] == '.')
+				return (0);
+			if (get_input[i + 1] == '/')
+				continue;
+			else
+				break;
+		}
+		else if (get_input[i] == '/' && i != 0)
+		{
+			if (get_input[i + 1] == '.')
+				continue;
+			i++;
+			break;
+		}
+		else
+			break;
+	}
+}
+
+
 
