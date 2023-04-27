@@ -25,6 +25,7 @@ void tokenizer(char *command);
 void execute_command(char *command);
 int exit_sh(datashell *data);
 int _atoi(char *s);
+int _isdigit(const char *s);
 
 #endif /* SHELL_H */
 
