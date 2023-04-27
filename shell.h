@@ -15,6 +15,16 @@
 #define COMMAND_LENGTH 75
 #define BUFFER 1024
 
+/* Struct data*/
+typedef struct data
+{
+	char *get_input;
+	char **args;
+	char *command;
+	char **_environ;
+
+} data_shell;
+
 /* Function prototypes */
 
 void print_prompt(void);
