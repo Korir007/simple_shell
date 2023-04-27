@@ -36,6 +36,10 @@ void execute_command(char *command);
 int exit_sh(datashell *data);
 int _atoi(char *s);
 int _isdigit(const char *s);
+int _isexecutable(data_shell *datash);
+char *_iswhich(char *cmd, char **_environ);
+int cmd_exec(data_shell *datash);
+int (*builtins(char *cmd))(data_shell *);
 
 #endif /* SHELL_H */
 
