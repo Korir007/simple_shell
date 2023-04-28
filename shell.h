@@ -25,6 +25,7 @@ int my_strlen(char *string);
 int my_strcmp(const char *first_string, const char *second_string);
 void tokenizer(char *command);
 void execute_command(char *command, char **argv);
+void exit_shell(char *args[]);
 
 #endif /* SHELL_H */
 
