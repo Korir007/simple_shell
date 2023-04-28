@@ -5,20 +5,23 @@
 *
 * Description: simple shell interpreter
 *
-* @void: zero arguments
+* @argc: command line argument count
+*
+* @argv: pointer to pointer of command character array
 *
 * Return: 0 if successful
 */
 
-int main(void)
+int main(int argc, char **argv)
 {
 	char *command = NULL;
+	(void) argc;
 
 	while (true)
 	{
 		print_prompt();
 		command = get_input();
-		execute_command(command);
+		execute_command(argv);
 		free(command);
 	}
 

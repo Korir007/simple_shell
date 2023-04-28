@@ -9,11 +9,13 @@
 #include <sys/wait.h>
 #include <stdbool.h>
 #include <string.h>
+#include <errno.h>
 
 /* Global variables */
 
 #define COMMAND_LENGTH 75
 #define BUFFER 1024
+#define NAME "hsh"
 
 /* Function prototypes */
 
@@ -22,7 +24,7 @@ char *get_input(void);
 int my_strlen(char *string);
 int my_strcmp(const char *first_string, const char *second_string);
 void tokenizer(char *command);
-void execute_command(char *command);
+int execute_command(char **argv);
 
 #endif /* SHELL_H */
 

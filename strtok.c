@@ -4,7 +4,7 @@
 * tokenizer - breaks the command string into
 * an array of strings
 *
-* @command: command string involved
+* @command: pointer to command string involved
 *
 * Return: void
 *
@@ -30,7 +30,5 @@ void tokenizer(char *command)
 	}
 
 	tokens[count] = NULL;
-
-	free(command);
 }
 
