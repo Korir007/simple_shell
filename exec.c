@@ -57,6 +57,10 @@ void execute_command(char *command, char **argv)
 			perror("waitpid error");
 			exit(EXIT_FAILURE);
 		}
+		else
+		{
+			waitpid(child_pid, &status, 0);
+		}
 	}
 	free(error_return);
 }

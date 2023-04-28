@@ -14,12 +14,12 @@
 
 int main(int argc, char **argv)
 {
-	char *command = NULL;
 	int interactive_mode;
 	(void) argc;
 
 	while (true)
 	{
+		char *command = NULL;
 		interactive_mode = isatty(STDIN_FILENO);
 
 		if (interactive_mode)

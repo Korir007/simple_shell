@@ -15,7 +15,7 @@ void tokenizer(char *command)
 	char **tokens, *token, *delimiter;
 	int count;
 
-	tokens =  NULL;
+	tokens = NULL;
 	token = NULL;
 	delimiter = " \t\n";
 	count = 0;

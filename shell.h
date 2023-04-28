@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <errno.h>
+#include <sys/types.h>
 
 /* Global variables */
 
@@ -25,6 +26,8 @@ int my_strlen(char *string);
 int my_strcmp(const char *first_string, const char *second_string);
 void tokenizer(char *command);
 void execute_command(char *command, char **argv);
+char *my_strdup(char *string);
+char *pathfinder(char *command, char *path[], int num);
 
 /* environ prototype */
 
