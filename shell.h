@@ -27,5 +27,9 @@ void tokenizer(char *command);
 void execute_command(char *command, char **argv);
 void exit_shell(char *args[]);
 
+/* environ prototype */
+
+extern char **environ;
+
 #endif /* SHELL_H */
 
