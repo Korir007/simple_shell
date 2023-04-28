@@ -6,8 +6,6 @@
  * exit_shell - exit/quit the shell.
  * @args: pointer to a character array containing command line arguments
  * 
- * This function takes a pointer to a character array named `args` and exits the shell
- * with the specified exit status. If no exit status is provided, the default value is 0.
  * 
  * Return: this function returns void
  */
@@ -24,5 +22,4 @@ void exit_shell(char *args[])
     // Exit the shell with the specified exit status
     exit(exit_msg);
 }
-
 
