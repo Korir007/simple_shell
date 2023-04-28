@@ -24,7 +24,7 @@ char *get_input(void);
 int my_strlen(char *string);
 int my_strcmp(const char *first_string, const char *second_string);
 void tokenizer(char *command);
-int execute_command(char **argv);
+void execute_command(char *command);
 
 #endif /* SHELL_H */
 

@@ -3,19 +3,23 @@
 /**
 * execute_command - execute commands input by user
 *
-* @argv: pointer to pointer of command character array
+* @argv: command string involved
 *
-* Return: 0 if sucessful and -1 if it fails
+* Return: void
 *
 */
 
-int execute_command(char **argv)
+void execute_command(char *command)
 {
+	char *arg[COMMAND_LENGTH] = {NULL};
 	char error_return[BUFFER];
 	int status;
 	pid_t child_pid;
 
 	child_pid = fork();
+
+	if (my_strlen(command) == 0)
+		return;
 
 	if (child_pid == -1)
 	{
@@ -24,13 +28,12 @@ int execute_command(char **argv)
 	}
 	else if (child_pid == 0)
 	{
-		if (execve(argv[0], argv, NULL) == -1)
+		if (execve(command, arg, NULL) == -1)
 		{
 			snprintf(error_return, BUFFER, "%s: %d: %s: not found\n", NAME,
-			errno, argv[0]);
+			errno, command);
 			write(STDOUT_FILENO, error_return, my_strlen(error_return));
 			exit(EXIT_FAILURE);
-			return (-1);
 		}
 	}
 	else
@@ -41,6 +44,5 @@ int execute_command(char **argv)
 			exit(EXIT_FAILURE);
 		}
 	}
-	return (0);
 }
 

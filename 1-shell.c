@@ -16,12 +16,13 @@ int main(int argc, char **argv)
 {
 	char *command = NULL;
 	(void) argc;
+	(void) argv;
 
 	while (true)
 	{
 		print_prompt();
 		command = get_input();
-		execute_command(argv);
+		execute_command(command);
 		free(command);
 	}
 
