@@ -27,7 +27,8 @@ int my_strcmp(const char *first_string, const char *second_string);
 void tokenizer(char *command);
 void execute_command(char *command, char **argv);
 char *my_strdup(char *string);
-char *pathfinder(char *command, char *path[], int num);
+char *pathfinder(char *command, char *pathway[], int num);
+void exit_shell(char *args[]);
 
 /* environ prototype */
 
