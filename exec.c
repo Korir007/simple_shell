@@ -3,23 +3,31 @@
 /**
 * execute_command - execute commands input by user
 *
-* @argv: command string involved
+* @command: command string involved
+*
+* @argv: array of character commands
 *
 * Return: void
 *
 */
 
-void execute_command(char *command)
+void execute_command(char *command, char **argv)
 {
-	char *arg[COMMAND_LENGTH] = {NULL};
-	char error_return[BUFFER];
+	char *error_return;
 	int status;
 	pid_t child_pid;
 
 	child_pid = fork();
+	error_return = calloc(BUFFER, sizeof(char));
 
 	if (my_strlen(command) == 0)
 		return;
+
+	if (error_return == NULL)
+	{
+		perror("error allocating memory");
+		exit(EXIT_FAILURE);
+	}
 
 	if (child_pid == -1)
 	{
@@ -28,7 +36,7 @@ void execute_command(char *command)
 	}
 	else if (child_pid == 0)
 	{
-		if (execve(command, arg, NULL) == -1)
+		if (execve(command, argv, NULL) == -1)
 		{
 			snprintf(error_return, BUFFER, "%s: %d: %s: not found\n", NAME,
 			errno, command);
@@ -44,5 +52,6 @@ void execute_command(char *command)
 			exit(EXIT_FAILURE);
 		}
 	}
+	free(error_return);
 }
 

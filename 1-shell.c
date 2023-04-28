@@ -15,15 +15,20 @@
 int main(int argc, char **argv)
 {
 	char *command = NULL;
+	int interactive_mode;
 	(void) argc;
-	(void) argv;
 
 	while (true)
 	{
-		print_prompt();
-		command = get_input();
-		execute_command(command);
-		free(command);
+		interactive_mode = isatty(STDIN_FILENO);
+
+		if (interactive_mode)
+		{
+			print_prompt();
+			command = get_input();
+			execute_command(command, argv);
+			free(command);
+		}
 	}
 
 	return (0);
