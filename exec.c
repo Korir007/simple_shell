@@ -38,8 +38,8 @@ void execute_command(char *command, char **argv)
 	{
 		if (execve(command, argv, NULL) == -1)
 		{
-			snprintf(error_return, BUFFER, "%s: %d: %s: not found\n", NAME,
-			errno, command);
+			snprintf(error_return, BUFFER, "%s: No such file or directory\n",
+			argv[0]);
 			write(STDOUT_FILENO, error_return, my_strlen(error_return));
 			exit(EXIT_FAILURE);
 		}
