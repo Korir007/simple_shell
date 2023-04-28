@@ -26,5 +26,9 @@ int my_strcmp(const char *first_string, const char *second_string);
 void tokenizer(char *command);
 void execute_command(char *command, char **argv);
 
+/* environ prototype */
+
+extern char **environ;
+
 #endif /* SHELL_H */
 

@@ -43,6 +43,12 @@ void execute_command(char *command, char **argv)
 			write(STDOUT_FILENO, error_return, my_strlen(error_return));
 			exit(EXIT_FAILURE);
 		}
+		else
+		{
+			execve(command, argv, environ);
+			perror("execve failed");
+			exit(EXIT_SUCCESS);
+		}
 	}
 	else
 	{
