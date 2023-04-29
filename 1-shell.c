@@ -21,7 +21,6 @@ int main(int argc, char *argv[ARGUMENTS])
 	char *token, *delimiter;
 	(void) argc;
 
-	interactive_mode = isatty(STDIN_FILENO);
 	delimiter = " \t\n";
 	path_chosen = strtok(path, delimiter);
 
@@ -35,6 +34,8 @@ int main(int argc, char *argv[ARGUMENTS])
 	while (true)
 	{
 		char *command = NULL;
+
+		interactive_mode = isatty(STDIN_FILENO);
 
 		if (interactive_mode)
 		{
