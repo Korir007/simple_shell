@@ -46,11 +46,11 @@ int main(void)
 		}
 
 
-		tok = _strtok(cmd, " \t\n");
+		tok = my_strtok(cmd, " \t\n");
 		while (tok != NULL && nargs < MAX_ARGS)
 		{
 			args[nargs++] = tok;
-			tok = _strtok(NULL, " \t\n");
+			tok = my_strtok(NULL, " \t\n");
 		}
 		args[nargs] = NULL;
 		if (nargs == 0)
@@ -59,7 +59,7 @@ int main(void)
 			continue;
 		}
 		nargs = 0;
-		if (_strcmp(args[0], "exit") == 0)
+		if (my_strcmp(args[0], "exit") == 0)
 		{
 			exit_shell(args);
 		}

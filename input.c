@@ -8,7 +8,7 @@
 * Return: command input by user
 */
 
-char get_input(char **cmd, size_t *n, FILE *ptr)
+char *_getline(char **cmd, size_t *n, FILE *ptr)
 {
 	static char buffer[1024];
 	static size_t buffer_size;

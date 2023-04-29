@@ -25,7 +25,7 @@
 
 char *search_path(char *cmd, char *paths[], int npaths);
 int my_strcmp(char *s1, const char *s2);
-char get_input(char **cmd, size_t *n, FILE *ptr);
+char *_getline(char **cmd, size_t *n, FILE *ptr);
 char *my_strtok(char *str, const char *delim);
 char *_strchr(const char *s, int c);
 void exit_shell(char *args[]);
