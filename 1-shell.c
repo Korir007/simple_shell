@@ -12,64 +12,88 @@
 * Return: 0 if successful
 */
 
-int main(int argc, char *argv[ARGUMENTS])
+int main(void)
 {
-	int interactive_mode, arg_count = 0, num = 0;
 	char *path = getenv("PATH");
-	char *pathway[PATH];
-	char *path_chosen;
-	char *token, *delimiter;
-	(void) argc;
+	char *paths[MAX_PATHS];
+	int npaths = 0;
+	char *pathtok = strtok(path, PATH_DELIM);
+	size_t n = 0;
+	int status;
+	char *args[MAX_ARGS];
+	int nargs = 0;
+	char *tok;
+	pid_t pid;
+	int interactive = isatty(STDIN_FILENO);
 
-	delimiter = " \t\n";
-	path_chosen = strtok(path, delimiter);
-
-	while (path_chosen != NULL && num < PATH)
+	while (pathtok != NULL && npaths < MAX_PATHS)
 	{
-		pathway[arg_count] = path_chosen;
-		path_chosen = strtok(NULL, delimiter);
-		arg_count++;
+		paths[npaths++] = pathtok;
+		pathtok = strtok(NULL, PATH_DELIM);
 	}
-
-	while (true)
+	while (1)
 	{
-		char *command = NULL;
-
-		interactive_mode = isatty(STDIN_FILENO);
-
-		if (interactive_mode)
+		char *cmd = NULL;
+		if(interactive)
 		{
-			print_prompt();
-			command = get_input();
-			path = pathfinder(argv[0], pathway, num);
-			if (path == NULL)
-			{
-				char error_return[MINI_BUFFER];
-
-				sprintf(error_return, "%s: command not found\n", argv[0]);
-				write(STDERR_FILENO, error_return, my_strlen(error_return));
-			}
-			token = my_strtok(command, delimiter);
-			while (token != NULL && arg_count < ARGUMENTS)
-			{
-				argv[arg_count] = token;
-				token = my_strtok(NULL, delimiter);
-				arg_count++;
-			}
-			argv[arg_count] = NULL;
-			if (arg_count == 0)
-			{
-				free(command);
-				exit(EXIT_FAILURE);
-			}
-			arg_count = 0;
-			if (my_strcmp(argv[0], "exit") == 0)
-			{
-				exit_shell(argv);
-			}
-			execute_command(command, argv);
-			free(command);
+		printf("hsh ");
+		fflush(stdout);
 		}
+		if (_getline(&cmd, &n, stdin) == NULL)
+		{
+			free(cmd);
+			break;
+		}
+
+
+		tok = _strtok(cmd, " \t\n");
+		while (tok != NULL && nargs < MAX_ARGS)
+		{
+			args[nargs++] = tok;
+			tok = _strtok(NULL, " \t\n");
+		}
+		args[nargs] = NULL;
+		if (nargs == 0)
+		{
+			free(cmd);
+			continue;
+		}
+		nargs = 0;
+		if (_strcmp(args[0], "exit") == 0)
+		{
+			exit_shell(args);
+		}
+		path = search_path(args[0], paths, npaths);
+
+		if (path == NULL)
+		{
+			printf("Command not found: %s\n", args[0]);
+			continue;
+		}
+
+		pid = fork();
+
+		if (pid == -1)
+		{
+			perror("fork");
+			exit(0);
+		}
+
+		else if (pid == 0)
+		{
+			execve(path, args, environ);
+			perror("execve");
+			free(cmd);
+			exit(0);
+		}
+
+		else
+		{
+			free(cmd);
+			waitpid(pid, &status, 0);
+		}
+		free(path);
+
 	}
 	return (0);
 }

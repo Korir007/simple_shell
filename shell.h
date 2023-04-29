@@ -23,15 +23,12 @@
 
 /* Function prototypes */
 
-void print_prompt(void);
-char *get_input(void);
-int my_strlen(char *string);
-int my_strcmp(char *first_string, char *second_string);
-void execute_command(char *command, char **argv);
-char *my_strdup(char *string);
-char *pathfinder(char *command, char *pathway[], int num);
-void exit_shell(char **argv);
-char *my_strtok(char *string, const char *delimiter);
+char *search_path(char *cmd, char *paths[], int npaths);
+int _strcmp (char *s1, const char *s2);
+char *_getline(char **line, size_t *n, FILE *ptr);
+char *_strtok(char *str, const char *delim);
+char *_strchr(const char *s, int c);
+void exit_shell(char *args[]);
 
 /* environ prototype */
 

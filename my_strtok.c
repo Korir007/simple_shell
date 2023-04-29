@@ -11,39 +11,37 @@
 *
 */
 
-char *my_strtok(char *string, const char *delimiter)
+char *my_strtok(char *str, const char *delim)
 {
-	static char *token_end;
-	char *token;
+	static char *endoftoken;
+	char *token = NULL;
 
-	token = NULL;
-
-	if (string != NULL)
+	if (str != NULL)
 	{
-		token_end = string;
+		endoftoken = str;
 	}
 
-	while (*token_end != '\0' && strchr(delimiter, *token_end) != NULL)
+	while (*endoftoken != '\0' && _strchr(delim, *endoftoken) != NULL)
 	{
-		token_end++;
+		endoftoken++;
 	}
 
-	if (*token_end == '\0')
+	if (*endoftoken == '\0')
 	{
 		return (NULL);
 	}
 
-	token = token_end;
+	token = endoftoken;
 
-	while (*token_end != '\0' && strchr(delimiter, *token_end) == NULL)
+	while (*endoftoken != '\0' && _strchr(delim, *endoftoken) == NULL)
 	{
-		token_end++;
+		endoftoken++;
 	}
 
-	if (*token_end != '\0')
+	if (*endoftoken != '\0')
 	{
-		*token_end = '\0';
-		token_end++;
+		*endoftoken = '\0';
+		endoftoken++;
 	}
 	return (token);
 }

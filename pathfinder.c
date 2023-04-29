@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
-* pathfinder - checks if path chosen is executable
+* *search_path - checks if path chosen is executable
 *
 * @command: command input by user
 *
@@ -13,25 +13,24 @@
 *
 */
 
-char *pathfinder(char *command, char *pathway[], int num)
+char *search_path(char *cmd, char *paths[], int npaths)
 {
 	int i = 0;
 
-	if (access(command, X_OK) == 0)
+	if (access(cmd, X_OK) == 0)
 	{
-		return (my_strdup(command));
+		return (strdup(cmd));
 	}
-
 	else
 	{
-		for (i = 0; i < num; i++)
+		for (i = 0; i < npaths; i++)
 		{
-			char path[COMMAND_LENGTH];
+			char path[MAX_CMD_LENGTH];
 
-			snprintf(path, COMMAND_LENGTH, "%s/%s", pathway[i], command);
+			snprintf(path, MAX_CMD_LENGTH, "%s/%s", paths[i], cmd);
 			if (access(path, X_OK) == 0)
 			{
-				return (my_strdup(path));
+				return (strdup(path));
 			}
 		}
 		return (NULL);

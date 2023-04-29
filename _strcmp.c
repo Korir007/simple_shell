@@ -13,21 +13,13 @@
 *
 */
 
-int my_strcmp(char *first_string, char *second_string)
+int my_strcmp(char *s1, const char *s2)
 {
-	int index;
-
-	index = 0;
-
-	while (first_string[index] == second_string[index])
+	while (*s1 && (*s1 == *s2))
 	{
-		if (first_string[index] == '\0')
-		{
-			return (0);
-		}
-		index++;
+		s1++;
+		s2++;
 	}
-
-	return (first_string[index] - second_string[index]);
+	return (*(const unsigned char *)s1 - *(const unsigned char *)s2);
 }
 

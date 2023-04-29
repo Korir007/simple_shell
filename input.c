@@ -8,38 +8,51 @@
 * Return: command input by user
 */
 
-char *get_input(void)
+char get_input(char **cmd, size_t *n, FILE *ptr)
 {
-	char *command;
-	size_t length;
-	ssize_t input;
+	static char buffer[1024];
+	static size_t buffer_size;
+	size_t len = 0;
+	char *p = NULL;
 
-	command = NULL;
-	length = 0;
-	input = getline(&command, &length, stdin);
+*cmd = NULL;
+*n = 0;
 
-	if (input == -1)
+while (fgets(buffer, sizeof(buffer), ptr) != NULL)
+{
+	len = strlen(buffer);
+
+	if (len > buffer_size)
 	{
-		if (input == EOF)
+		buffer_size = len;
+		p = (char *)realloc(*cmd, buffer_size);
+		if (p == NULL)
 		{
-			write(STDOUT_FILENO, "\n", 1);
-			exit(EXIT_SUCCESS);
+			free(*cmd);
+			return (NULL);
 		}
-		else
-		{
-			/* easier to trace where error occured */
-			perror("input error");
-			exit(EXIT_FAILURE);
-		}
+		*cmd = p;
+		*n = buffer_size;
 	}
 
-	/* checks if user presses ENTER after input */
+memcpy(*cmd + *n - buffer_size, buffer, len);
+buffer_size -= len;
 
-	if (command[input - 1] == '\n')
+	if (buffer[len - 1] == '\n')
 	{
-		command[input - 1] = '\0';
+		(*cmd)[*n - 1] = '\0';
+		return (*cmd);
 	}
+}
 
-	return (command);
+	if (*n > 0)
+	{
+		(*cmd)[*n - buffer_size] = '\0';
+		return (*cmd);
+	}
+	else
+	{
+		return (NULL);
+	}
 }
 
