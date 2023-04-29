@@ -1,100 +1,135 @@
 #include "shell.h"
 
+void sig_handler(int sig);
+int execute(char **args, char **front);
+
 /**
-* main - entry point
-*
-* Description: simple shell interpreter
-*
-* @argc: command line argument count
-*
-* @argv: pointer of command character array
-*
-* Return: 0 if successful
-*/
-
-int main(void)
+ * sig_handler - Prints a new prompt upon a signal.
+ * @sig: The signal.
+ */
+void sig_handler(int sig)
 {
-	char *path = getenv("PATH");
-	char *paths[MAX_PATHS];
-	int npaths = 0;
-	char *pathtok = strtok(path, PATH_DELIM);
-	size_t n = 0;
-	int status;
-	char *args[MAX_ARGS];
-	int nargs = 0;
-	char *tok;
-	pid_t pid;
-	int interactive = isatty(STDIN_FILENO);
+	char *new_prompt = "\n$ ";
 
-	while (pathtok != NULL && npaths < MAX_PATHS)
+	(void)sig;
+	signal(SIGINT, sig_handler);
+	write(STDIN_FILENO, new_prompt, 3);
+}
+
+/**
+ * execute - Executes a command in a child process.
+ * @args: An array of arguments.
+ * @front: A double pointer to the beginning of args.
+ *
+ * Return: If an error occurs - a corresponding error code.
+ *         O/w - The exit value of the last executed command.
+ */
+int execute(char **args, char **front)
+{
+	pid_t child_pid;
+	int status, flag = 0, ret = 0;
+	char *command = args[0];
+
+	if (command[0] != '/' && command[0] != '.')
 	{
-		paths[npaths++] = pathtok;
-		pathtok = strtok(NULL, PATH_DELIM);
+		flag = 1;
+		command = get_location(command);
 	}
-	while (1)
+
+	if (!command || (access(command, F_OK) == -1))
 	{
-		char *cmd = NULL;
-		if(interactive)
+		if (errno == EACCES)
+			ret = (create_error(args, 126));
+		else
+			ret = (create_error(args, 127));
+	}
+	else
+	{
+		child_pid = fork();
+		if (child_pid == -1)
 		{
-		printf("hsh ");
-		fflush(stdout);
+			if (flag)
+				free(command);
+			perror("Error child:");
+			return (1);
 		}
-		if (_getline(&cmd, &n, stdin) == NULL)
+		if (child_pid == 0)
 		{
-			free(cmd);
-			break;
+			execve(command, args, environ);
+			if (errno == EACCES)
+				ret = (create_error(args, 126));
+			free_env();
+			free_args(args, front);
+			free_alias_list(aliases);
+			_exit(ret);
 		}
-
-
-		tok = my_strtok(cmd, " \t\n");
-		while (tok != NULL && nargs < MAX_ARGS)
-		{
-			args[nargs++] = tok;
-			tok = my_strtok(NULL, " \t\n");
-		}
-		args[nargs] = NULL;
-		if (nargs == 0)
-		{
-			free(cmd);
-			continue;
-		}
-		nargs = 0;
-		if (my_strcmp(args[0], "exit") == 0)
-		{
-			exit_shell(args);
-		}
-		path = search_path(args[0], paths, npaths);
-
-		if (path == NULL)
-		{
-			printf("Command not found: %s\n", args[0]);
-			continue;
-		}
-
-		pid = fork();
-
-		if (pid == -1)
-		{
-			perror("fork");
-			exit(0);
-		}
-
-		else if (pid == 0)
-		{
-			execve(path, args, environ);
-			perror("execve");
-			free(cmd);
-			exit(0);
-		}
-
 		else
 		{
-			free(cmd);
-			waitpid(pid, &status, 0);
+			wait(&status);
+			ret = WEXITSTATUS(status);
 		}
-		free(path);
-
 	}
-	return (0);
+	if (flag)
+		free(command);
+	return (ret);
+}
+
+/**
+ * main - Runs a simple UNIX command interpreter.
+ * @argc: The number of arguments supplied to the program.
+ * @argv: An array of pointers to the arguments.
+ *
+ * Return: The return value of the last executed command.
+ */
+int main(int argc, char *argv[])
+{
+	int ret = 0, retn;
+	int *exe_ret = &retn;
+	char *prompt = "$ ", *new_line = "\n";
+
+	name = argv[0];
+	hist = 1;
+	aliases = NULL;
+	signal(SIGINT, sig_handler);
+
+	*exe_ret = 0;
+	environ = _copyenv();
+	if (!environ)
+		exit(-100);
+
+	if (argc != 1)
+	{
+		ret = proc_file_commands(argv[1], exe_ret);
+		free_env();
+		free_alias_list(aliases);
+		return (*exe_ret);
+	}
+
+	if (!isatty(STDIN_FILENO))
+	{
+		while (ret != END_OF_FILE && ret != EXIT)
+			ret = handle_args(exe_ret);
+		free_env();
+		free_alias_list(aliases);
+		return (*exe_ret);
+	}
+
+	while (1)
+	{
+		write(STDOUT_FILENO, prompt, 2);
+		ret = handle_args(exe_ret);
+		if (ret == END_OF_FILE || ret == EXIT)
+		{
+			if (ret == END_OF_FILE)
+				write(STDOUT_FILENO, new_line, 1);
+			free_env();
+			free_alias_list(aliases);
+			exit(*exe_ret);
+		}
+	}
+
+	free_env();
+	free_alias_list(aliases);
+	return (*exe_ret);
 }
 
