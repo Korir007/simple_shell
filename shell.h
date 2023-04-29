@@ -17,18 +17,21 @@
 #define COMMAND_LENGTH 75
 #define BUFFER 1024
 #define NAME "hsh"
+#define PATH 20
+#define ARGUMENTS 30
+#define MINI_BUFFER 256
 
 /* Function prototypes */
 
 void print_prompt(void);
 char *get_input(void);
 int my_strlen(char *string);
-int my_strcmp(const char *first_string, const char *second_string);
-void tokenizer(char *command);
+int my_strcmp(char *first_string, char *second_string);
 void execute_command(char *command, char **argv);
 char *my_strdup(char *string);
 char *pathfinder(char *command, char *pathway[], int num);
-void exit_shell(char *args[]);
+void exit_shell(char **argv);
+char *my_strtok(char *string, const char *delimiter);
 
 /* environ prototype */
 

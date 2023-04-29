@@ -3,9 +3,9 @@
 /**
 * my_strcmp - compares two strings
 *
-* @first_string: pointer to first string
+* @first_string: pointer to pointer to first string
 *
-* @second_string: pointer to second string
+* @second_string: pointer to pointer to second string
 *
 * Return: 0 if strings are identical
 *
@@ -13,7 +13,7 @@
 *
 */
 
-int my_strcmp(const char *first_string, const char *second_string)
+int my_strcmp(char *first_string, char *second_string)
 {
 	int index;
 
